@@ -1,0 +1,10 @@
+function [exectime, data] = nwhandler_code(seg, data)
+
+msg=ttGetMsg;         % Obtain sensor value
+if (msg.id==1)
+    ttCreateJob('controller_task');
+else
+    ttCreateJob(
+
+ttCreateJob(data)
+exectime = -1;
