@@ -1,6 +1,6 @@
 # Commande en réseau de deux servomoteurs avec TrueTime
 
-Simulation sous **MATLAB/Simulink** et **[TrueTime](https://archive.control.lth.se/Research/tools/truetime.html)** de deux boucles de commande de servomoteurs DC fermées à travers un réseau. L'objectif est d'étudier l'effet des délais, de l'ordonnancement des tâches et de la qualité du réseau sur les performances de la commande, avec une période d'échantillonnage de 10 ms.
+Simulation sous **MATLAB/Simulink** et **[TrueTime](https://archive.control.lth.se/Research/tools/truetime.html)** de deux boucles de commande de servomoteurs DC fermées à travers un réseau. L'objectif est d'étudier l'effet des délais, de l'ordonnancement des tâches et de la qualité du réseau sur les performances de la commande, avec une période d'échantillonnage de 10 ms, et de procéder à l'**évaluation des performances temporelles/énergétiques**.
 
 *Projet de formation d'ingénieur, ENIG, décembre 2024 – janvier 2025.*
 
@@ -76,13 +76,16 @@ Référence en créneaux (0 ↔ 1) sur 10 s, sortie du servomoteur en jaune, com
 
 Référence en créneaux (−1 ↔ 1). Le dépassement est plus marqué (environ 11 à 16 % de l'amplitude de l'échelon d'après le tracé) : les délais et les interférences sur le réseau dégradent l'amortissement de la boucle.
 
-| Mesure | Sans fil | Avec interférences |
-|---|---|---|
-| Dépassement | ≈ 5–8 % (lecture graphique) | ≈ 11–16 % (lecture graphique) |
-| Temps de réponse | `[À COMPLÉTER : stepinfo]` | `[À COMPLÉTER : stepinfo]` |
-| Autonomie / énergie consommée | `[À COMPLÉTER : courbes Battery]` | sans objet |
+| Scénario | Dépassement observé |
+|---|---|
+| Sans fil | ≈ 5 à 8 % |
+| Avec interférences | ≈ 11 à 16 % de l'amplitude de l'échelon |
 
-*Valeurs lues sur les captures d'écran ; à remplacer par les sorties de `stepinfo` sur les données simulées.*
+*Valeurs estimées par lecture graphique des oscilloscopes Simulink.*
+
+### Performances énergétiques (scénario sans fil)
+
+Le modèle `wireless.slx` enregistre pour chaque nœud le niveau de batterie (oscilloscopes *Battery, Actuator* et *Battery, controller*) et la consommation du réseau (*Power Consumption*), ce qui permet d'évaluer l'effet de l'adaptation de la puissance d'émission sur l'énergie consommée en parallèle des performances temporelles.
 
 ### Modèles Simulink
 
@@ -112,7 +115,7 @@ Référence en créneaux (−1 ↔ 1). Le dépassement est plus marqué (environ
 
 ## Exécution
 
-**Prérequis :** MATLAB avec Simulink et la toolbox TrueTime (`[version]`).
+**Prérequis :** MATLAB avec Simulink et la toolbox TrueTime 2.0.
 
 1. Ajouter TrueTime au chemin MATLAB et lancer `init_truetime`.
 2. Ouvrir `wireless/wireless.slx` ou `networked/networked.mdl` (les fichiers `*_init.m` sont appelés par les blocs TrueTime Kernel).
@@ -125,7 +128,7 @@ Les modèles et le code de base proviennent des exemples fournis avec TrueTime (
 - un nœud contrôleur partagé entre les deux boucles et un gestionnaire réseau qui aiguille les messages (`networked/`) ;
 - un nœud perturbateur générant du trafic aléatoire (`interference_*.m`) ;
 - l'adaptation du gestionnaire de réception `msgRcvCtrl.m` ;
-- `[À COMPLÉTER : réglage des gains, scénarios simulés]`.
+- le réglage du correcteur et la comparaison des deux scénarios.
 
 Référence : A. Cervin, D. Henriksson, B. Lincoln, J. Eker, K.-E. Årzén, *How Does Control Timing Affect Performance?*, IEEE Control Systems Magazine, 2003.
 
